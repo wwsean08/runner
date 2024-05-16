@@ -67,7 +67,7 @@ namespace GitHub.Runner.Worker
                 }
             }
         }
-        
+
         public DictionaryContextData Container
         {
             get
