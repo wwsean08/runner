@@ -8,7 +8,6 @@ namespace GitHub.Runner.Worker
 {
     public sealed class JobContext : DictionaryContextData
     {
-        GlobalContext _globalContext;
         public ActionResult? Status
         {
             get
@@ -48,7 +47,8 @@ namespace GitHub.Runner.Worker
         {
             get
             {
-                var permissions = _globalContext.Variables.Get("system.github.token.permissions") ?? "";
+                GlobalContext globalContext = new GlobalContext();
+                var permissions = globalContext.Variables.Get("system.github.token.permissions") ?? "";
                 if (!string.IsNullOrEmpty(permissions))
                 {
                     var permissionsData = new DictionaryContextData();
