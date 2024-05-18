@@ -238,6 +238,18 @@ namespace GitHub.Runner.Worker
                             jobContext.Global.ServiceContainers.Add(new Container.ContainerInfo(HostContext, serviceContainer, false, networkAlias));
                         }
                     }
+                    
+                    // Evaluating the job permissions
+                    context.Debug("Evaluating job permissions");
+                    var permissionsString = jobContext.Global.Variables.Get("system.github.token.permissions") ?? "";
+                    if (!string.IsNullOrEmpty(permissionsString))
+                    {
+                        var permissionsDictionary = StringUtil.ConvertFromJson<Dictionary<string, string>>(permissionsString);
+                        foreach (var pair in permissionsDictionary)
+                        {
+                            jobContext.JobContext.Permissions[pair.Key] = new StringContextData(pair.Value);
+                        }
+                    }
 
                     // Evaluate the job defaults
                     context.Debug("Evaluating job defaults");

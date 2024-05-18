@@ -47,18 +47,9 @@ namespace GitHub.Runner.Worker
         {
             get
             {
-                GlobalContext globalContext = new GlobalContext();
-                var permissions = globalContext.Variables.Get("system.github.token.permissions") ?? "";
-                if (!string.IsNullOrEmpty(permissions))
+                if (this.TryGetValue("permissions", out var services) && services is DictionaryContextData permissionsDictionary)
                 {
-                    var permissionsData = new DictionaryContextData();
-                    this["permissions"] = permissionsData;
-                    var permissionsJson = StringUtil.ConvertFromJson<Dictionary<string, string>>(permissions);
-                    foreach (KeyValuePair<string, string> entry in permissionsJson)
-                    {
-                        permissionsData.Add(entry.Key, new StringContextData(entry.Value));
-                    }
-                    return this["permissions"] as DictionaryContextData;
+                    return permissionsDictionary;
                 }
                 else
                 {
