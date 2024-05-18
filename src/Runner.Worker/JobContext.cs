@@ -1,6 +1,8 @@
-﻿using GitHub.DistributedTask.Pipelines.ContextData;
+﻿using System.Collections.Generic;
+using GitHub.DistributedTask.Pipelines.ContextData;
 using GitHub.Runner.Common.Util;
 using GitHub.Runner.Common;
+using GitHub.Runner.Sdk;
 
 namespace GitHub.Runner.Worker
 {
@@ -37,6 +39,22 @@ namespace GitHub.Runner.Worker
                 {
                     this["services"] = new DictionaryContextData();
                     return this["services"] as DictionaryContextData;
+                }
+            }
+        }
+
+        public DictionaryContextData Permissions
+        {
+            get
+            {
+                if (this.TryGetValue("permissions", out var services) && services is DictionaryContextData permissionsDictionary)
+                {
+                    return permissionsDictionary;
+                }
+                else
+                {
+                    this["permissions"] = new DictionaryContextData();
+                    return this["permissions"] as DictionaryContextData;
                 }
             }
         }
